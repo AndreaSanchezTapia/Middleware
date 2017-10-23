@@ -8,8 +8,7 @@ import csv
 def get_experiments_by_status(status=2):
     url = 'http://model-r.jbrj.gov.br/ws/?status=' + str(status)
     response = urllib2.urlopen(url)
-    all_exp_dict = json.loads(response.read())
-    all_exp_list = all_exp_dict['experiment']
+    all_exp_list = json.loads(response.read())
     return all_exp_list
 
 def update_experiment_status(id_experiment, status):
