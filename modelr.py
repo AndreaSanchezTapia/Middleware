@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import urllib
 import urllib2
 import json
 import csv
@@ -28,3 +29,56 @@ def write_occurrences_csv(list_of_points, output_file):
         writer.writeheader()
         for point in list_of_points:
             writer.writerow(point)
+
+# TODO raise Exception when a web service error occurs.
+# Right now it only prints the response for debugging purposes.
+def inform_experiment_results(params):
+    query = urllib.urlencode(params)
+    url = 'https://model-r.jbrj.gov.br/ws/setresult.php'
+    f = urllib.urlopen(url, query)
+    contents = f.read()
+    print contents
+    f.close()
+
+def inform_partitions(exp_id, partition, algorithm, kappa, spec_sens,
+        no_omission, prevalence, equal_sens_spec, sensitivity, auc, tss,
+        raster_cut_path, png_bin_path, png_cont_path, png_cut_path):
+    POST_params = {'id': exp_id,
+            'idresulttype': '1',
+            'op': 'I',
+            'partition': partition,
+            'algorithm': algorithm,
+            'kappa': kappa,
+            'spec_sens': spec_sens,
+            'no_omission': no_omission,
+            'prevalence': prevalence,
+            'equal_sens_spec': equal_sens_spec,
+            'sensitivity': sensitivity,
+            'auc': auc,
+            'tss': tss,
+            'raster_cut_path': raster_cut_path,
+            'png_bin_path': png_bin_path,
+            'png_cont_path': png_cont_path,
+            'png_cut_path': png_cut_path
+            }
+    inform_experiment_results(POST_params)
+
+def inform_final_models(exp_id, raster_cut_path, png_cont_path, png_cut_path):
+    POST_params = {'id': exp_id,
+            'op': 'I',
+            'idresulttype': '2',
+            'raster_cut_path': raster_cut_path,
+            'png_cont_path': png_cont_path,
+            'png_cut_path': png_cut_path
+            }
+    inform_experiment_results(POST_params)
+
+def inform_ensembles(exp_id, raster_cut_path, png_cont_path, png_cut_path):
+    POST_params = {'id': exp_id,
+            'op': 'I',
+            'idresulttype': '3',
+            'raster_cut_path': raster_cut_path,
+            'png_cont_path': png_cont_path,
+            'png_cut_path': png_cut_path
+            }
+    inform_experiment_results(POST_params)
