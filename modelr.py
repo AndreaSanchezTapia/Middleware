@@ -18,6 +18,7 @@ def update_experiment_status(id_experiment, status):
     return update_status['experiment'][0]
 
 def get_occurrences_by_status(experiment, status):
+    status = str(status)
     all_points = experiment['occurrences']
     return [point for point in all_points if point['idstatusoccurrence'] == status]
 
