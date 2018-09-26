@@ -30,8 +30,7 @@ def write_occurrences_csv(list_of_points, output_file):
             writer.writerow(point)
 
 # TODO raise Exception when a web service error occurs.
-# Right now it only prints the response for debugging purposes.
 def inform_experiment_results(evaluate_info):
     url = 'https://model-r.jbrj.gov.br/ws/setresult.php'
     r = requests.post(url, data=evaluate_info)
-    print(r.text)
+    return r.json()
